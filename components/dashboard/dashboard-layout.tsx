@@ -1,100 +1,39 @@
 "use client"
 
+import type React from "react"
+
 import { useState } from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import Sidebar from "./sidebar"
-import Header from "./header"
-import AdminOverview from "./admin/overview"
-import UsersPage from "./admin/users"
-import AnalyticsPage from "./admin/analytics"
-import ToursPage from "./admin/tours"
-import RevenuePage from "./admin/revenue"
-import ReviewsPage from "./admin/reviews"
-import MessagesPage from "./admin/messages"
-import TouristDashboard from "./tourist/dashboard"
-import TripsPage from "./tourist/trips"
-import GuideDashboard from "./guide/dashboard"
+import { usePathname } from "next/navigation"
+import { SidebarProvider } from "@/components/ui/sidebar"
+import DashboardSidebar from "@/components/dashboard/sidebar"
+import DashboardHeader from "@/components/dashboard/header"
+import ChatWidget from "@/components/chat/chat-widget"
 
 interface DashboardLayoutProps {
-  userRole: "admin" | "tourist" | "guide"
+  children: React.ReactNode
+  userRole: "tourist" | "host" | "admin"
+  userId: string
 }
 
-export default function DashboardLayout({ userRole }: DashboardLayoutProps) {
-  const [activeSection, setActiveSection] = useState(userRole === "admin" ? "overview" : "dashboard")
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
+export default function DashboardLayout({ children, userRole, userId }: DashboardLayoutProps) {
+  const pathname = usePathname()
+  const [sidebarOpen, setSidebarOpen] = useState(true)
 
-  const renderContent = () => {
-    if (userRole === "admin") {
-      switch (activeSection) {
-        case "overview":
-          return <AdminOverview />
-        case "users":
-          return <UsersPage />
-        case "analytics":
-          return <AnalyticsPage />
-        case "tours":
-          return <ToursPage />
-        case "revenue":
-          return <RevenuePage />
-        case "reviews":
-          return <ReviewsPage />
-        case "messages":
-          return <MessagesPage />
-        default:
-          return <AdminOverview />
-      }
-    }
-
-    if (userRole === "tourist") {
-      switch (activeSection) {
-        case "dashboard":
-          return <TouristDashboard />
-        case "trips":
-          return <TripsPage />
-        default:
-          return <TouristDashboard />
-      }
-    }
-
-    if (userRole === "guide") {
-      switch (activeSection) {
-        case "dashboard":
-          return <GuideDashboard />
-        default:
-          return <GuideDashboard />
-      }
-    }
-
-    return <div>Content not found</div>
-  }
+  // Don't show chat widget on messages page to avoid duplication
+  const showChatWidget = !pathname?.includes("/dashboard/messages")
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex">
-      <Sidebar
-        userRole={userRole}
-        activeSection={activeSection}
-        onSectionChange={setActiveSection}
-        isCollapsed={sidebarCollapsed}
-        onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)}
-      />
+    <SidebarProvider defaultOpen={sidebarOpen} open={sidebarOpen} onOpenChange={setSidebarOpen}>
+      <div className="flex min-h-screen">
+        <DashboardSidebar userRole={userRole} />
+        <div className="flex flex-col flex-1">
+          <DashboardHeader userRole={userRole} />
+          <main className="flex-1 p-4 md:p-6 bg-gray-50 dark:bg-gray-900">{children}</main>
+        </div>
 
-      <div className="flex-1 flex flex-col min-w-0">
-        <Header userRole={userRole} onToggleSidebar={() => setSidebarCollapsed(!sidebarCollapsed)} />
-
-        <main className="flex-1 p-6 overflow-auto">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeSection}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.3 }}
-            >
-              {renderContent()}
-            </motion.div>
-          </AnimatePresence>
-        </main>
+        {/* Chat Widget */}
+        {showChatWidget && <ChatWidget currentUserId={userId} currentUserRole={userRole} />}
       </div>
-    </div>
+    </SidebarProvider>
   )
 }

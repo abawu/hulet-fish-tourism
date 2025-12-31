@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { motion, AnimatePresence } from "framer-motion"
+import { AnimatePresence, motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -115,38 +115,30 @@ export default function Sidebar({
       )}
 
       {/* Sidebar */}
-      <motion.div
-        initial={false}
-        animate={{
-          width: isCollapsed ? 80 : 280,
-          x: isCollapsed ? -280 : 0,
-        }}
-        transition={{ duration: 0.3, ease: "easeInOut" }}
-        className={`fixed left-0 top-0 h-full bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 z-50 lg:relative lg:translate-x-0 ${
-          isCollapsed ? "lg:w-20" : "lg:w-80"
+      <div
+        className={`fixed left-0 top-0 h-full bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-700 shadow-xl z-50 lg:relative lg:translate-x-0 transition-all duration-300 ${
+          isCollapsed ? "lg:w-20 -translate-x-full lg:translate-x-0" : "lg:w-80 translate-x-0"
         }`}
       >
         <div className="flex flex-col h-full">
           {/* Header */}
-          <div className="p-6 border-b border-gray-200 dark:border-gray-700">
+          <div className="p-6 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800">
             <div className="flex items-center justify-between">
-              <motion.div
-                animate={{ opacity: isCollapsed ? 0 : 1 }}
-                transition={{ duration: 0.2 }}
-                className="flex items-center space-x-3"
+              <div
+                className={`flex items-center space-x-3 transition-opacity duration-200 ${isCollapsed ? "opacity-0" : "opacity-100"}`}
               >
-                <div className="w-10 h-10 bg-gradient-to-r from-amber-500 to-orange-600 rounded-xl flex items-center justify-center">
+                <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-teal-600 rounded-xl flex items-center justify-center">
                   <span className="text-white font-bold text-lg">HF</span>
                 </div>
                 {!isCollapsed && (
                   <div>
-                    <h1 className="text-xl font-bold bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent">
+                    <h1 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-teal-600 bg-clip-text text-transparent">
                       Hulet Fish
                     </h1>
-                    <p className="text-xs text-gray-500 dark:text-gray-400 capitalize">{userRole} Dashboard</p>
+                    <p className="text-xs text-slate-500 dark:text-slate-400 capitalize">{userRole} Dashboard</p>
                   </div>
                 )}
-              </motion.div>
+              </div>
 
               <Button variant="ghost" size="sm" onClick={onToggleCollapse} className="lg:hidden">
                 <X className="w-5 h-5" />
@@ -155,11 +147,11 @@ export default function Sidebar({
           </div>
 
           {/* User Profile */}
-          <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+          <div className="p-4 border-b border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50">
             <div className="relative">
               <Button
                 variant="ghost"
-                className="w-full p-3 justify-start hover:bg-gray-100 dark:hover:bg-gray-800"
+                className="w-full p-3 justify-start hover:bg-slate-100 dark:hover:bg-slate-800"
                 onClick={() => setShowUserMenu(!showUserMenu)}
               >
                 <Avatar className="w-8 h-8">
@@ -173,11 +165,11 @@ export default function Sidebar({
                 </Avatar>
                 {!isCollapsed && (
                   <div className="ml-3 flex-1 text-left">
-                    <p className="text-sm font-medium text-gray-900 dark:text-gray-100">{currentUser.name}</p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">{currentUser.role}</p>
+                    <p className="text-sm font-medium text-slate-900 dark:text-slate-100">{currentUser.name}</p>
+                    <p className="text-xs text-slate-500 dark:text-slate-400">{currentUser.role}</p>
                   </div>
                 )}
-                {!isCollapsed && <ChevronDown className="w-4 h-4 text-gray-400" />}
+                {!isCollapsed && <ChevronDown className="w-4 h-4 text-slate-400" />}
               </Button>
 
               {/* User Menu Dropdown */}
@@ -187,7 +179,7 @@ export default function Sidebar({
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -10 }}
-                    className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 z-10"
+                    className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-slate-800 rounded-lg shadow-lg border border-slate-200 dark:border-slate-700 z-10"
                   >
                     <div className="p-2">
                       <Button variant="ghost" size="sm" className="w-full justify-start">
@@ -202,7 +194,7 @@ export default function Sidebar({
                         <Shield className="w-4 h-4 mr-2" />
                         Privacy
                       </Button>
-                      <div className="border-t border-gray-200 dark:border-gray-700 my-2" />
+                      <div className="border-t border-slate-200 dark:border-slate-700 my-2" />
                       <Button
                         variant="ghost"
                         size="sm"
@@ -221,27 +213,27 @@ export default function Sidebar({
           {/* Navigation */}
           <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
             {items.map((item) => (
-              <motion.div key={item.id} whileHover={{ x: 2 }} whileTap={{ scale: 0.98 }}>
+              <div key={item.id}>
                 <Button
                   variant={activeSection === item.id ? "default" : "ghost"}
-                  className={`w-full justify-start h-12 ${
+                  className={`w-full justify-start h-12 text-left font-medium ${
                     activeSection === item.id
-                      ? "bg-gradient-to-r from-amber-500 to-orange-600 text-white shadow-lg"
-                      : "hover:bg-gray-100 dark:hover:bg-gray-800"
+                      ? "bg-gradient-to-r from-blue-600 to-teal-600 text-white shadow-lg hover:from-blue-700 hover:to-teal-700"
+                      : "hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-100"
                   }`}
                   onClick={() => onSectionChange(item.id)}
                 >
-                  <item.icon className="w-5 h-5" />
+                  <item.icon className={`w-6 h-6 ${isCollapsed ? "mx-auto" : ""}`} />
                   {!isCollapsed && (
                     <>
                       <span className="ml-3 flex-1 text-left">{item.label}</span>
                       {item.badge && (
                         <Badge
                           variant={activeSection === item.id ? "secondary" : "default"}
-                          className={`ml-2 ${
+                          className={`ml-2 font-semibold ${
                             activeSection === item.id
-                              ? "bg-white/20 text-white"
-                              : "bg-amber-100 text-amber-700 dark:bg-amber-900 dark:text-amber-300"
+                              ? "bg-white/20 text-white border-white/30"
+                              : "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300 border-blue-200 dark:border-blue-800"
                           }`}
                         >
                           {item.badge}
@@ -250,28 +242,28 @@ export default function Sidebar({
                     </>
                   )}
                 </Button>
-              </motion.div>
+              </div>
             ))}
           </nav>
 
           {/* Footer */}
           {!isCollapsed && (
-            <div className="p-4 border-t border-gray-200 dark:border-gray-700">
-              <div className="bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 rounded-lg p-4">
+            <div className="p-4 border-t border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50">
+              <div className="bg-gradient-to-r from-blue-50 to-teal-50 dark:from-blue-900/30 dark:to-teal-900/30 rounded-lg p-4 border border-blue-200 dark:border-blue-800">
                 <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 bg-gradient-to-r from-amber-500 to-orange-600 rounded-lg flex items-center justify-center">
+                  <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-teal-600 rounded-lg flex items-center justify-center">
                     <Star className="w-4 h-4 text-white" />
                   </div>
                   <div className="flex-1">
-                    <p className="text-sm font-medium text-gray-900 dark:text-gray-100">Need Help?</p>
-                    <p className="text-xs text-gray-600 dark:text-gray-400">Contact support</p>
+                    <p className="text-sm font-medium text-slate-900 dark:text-slate-100">Need Help?</p>
+                    <p className="text-xs text-slate-600 dark:text-slate-400">Contact support</p>
                   </div>
                 </div>
               </div>
             </div>
           )}
         </div>
-      </motion.div>
+      </div>
     </>
   )
 }

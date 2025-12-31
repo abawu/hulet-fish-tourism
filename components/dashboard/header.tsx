@@ -109,7 +109,7 @@ export default function Header({ userRole, onToggleSidebar }: HeaderProps) {
   }
 
   return (
-    <header className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 px-6 py-4">
+    <header className="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700 px-6 py-4 shadow-sm z-40 relative">
       <div className="flex items-center justify-between">
         {/* Left Section */}
         <div className="flex items-center space-x-4">
@@ -118,10 +118,10 @@ export default function Header({ userRole, onToggleSidebar }: HeaderProps) {
           </Button>
 
           <div className="hidden lg:block">
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+            <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">
               {getGreeting()}, {getUserName()}! 👋
             </h1>
-            <p className="text-sm text-gray-600 dark:text-gray-400">
+            <p className="text-sm text-slate-600 dark:text-slate-400">
               {userRole === "admin" && t("dashboard.admin.subtitle")}
               {userRole === "tourist" && t("dashboard.tourist.subtitle")}
               {userRole === "guide" && t("dashboard.guide.subtitle")}
@@ -132,7 +132,7 @@ export default function Header({ userRole, onToggleSidebar }: HeaderProps) {
         {/* Center Section - Search */}
         <div className="flex-1 max-w-md mx-4">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4" />
             <Input
               placeholder={
                 userRole === "admin"
@@ -143,7 +143,7 @@ export default function Header({ userRole, onToggleSidebar }: HeaderProps) {
               }
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10 bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700"
+              className="pl-10 bg-slate-50 dark:bg-slate-800 border-slate-300 dark:border-slate-600 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-blue-500 dark:focus:ring-blue-400"
             />
           </div>
         </div>
@@ -154,11 +154,19 @@ export default function Header({ userRole, onToggleSidebar }: HeaderProps) {
           <div className="hidden md:flex items-center space-x-2">
             {userRole === "admin" && (
               <>
-                <Button variant="outline" size="sm">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="border-slate-300 dark:border-slate-600 hover:border-blue-500 dark:hover:border-blue-400 bg-transparent"
+                >
                   <Calendar className="w-4 h-4 mr-2" />
                   {t("actions.schedule")}
                 </Button>
-                <Button variant="outline" size="sm">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="border-slate-300 dark:border-slate-600 hover:border-blue-500 dark:hover:border-blue-400 bg-transparent"
+                >
                   <MapPin className="w-4 h-4 mr-2" />
                   {t("actions.tours")}
                 </Button>
@@ -166,22 +174,34 @@ export default function Header({ userRole, onToggleSidebar }: HeaderProps) {
             )}
             {userRole === "tourist" && (
               <>
-                <Button variant="outline" size="sm">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="border-slate-300 dark:border-slate-600 hover:border-blue-500 dark:hover:border-blue-400 bg-transparent"
+                >
                   <Globe className="w-4 h-4 mr-2" />
                   {t("actions.explore")}
                 </Button>
-                <Button className="bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700">
+                <Button className="bg-gradient-to-r from-blue-600 to-teal-600 hover:from-blue-700 hover:to-teal-700 text-white">
                   {t("actions.bookTour")}
                 </Button>
               </>
             )}
             {userRole === "guide" && (
               <>
-                <Button variant="outline" size="sm">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="border-slate-300 dark:border-slate-600 hover:border-blue-500 dark:hover:border-blue-400 bg-transparent"
+                >
                   <Calendar className="w-4 h-4 mr-2" />
                   {t("actions.schedule")}
                 </Button>
-                <Button variant="outline" size="sm">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="border-slate-300 dark:border-slate-600 hover:border-blue-500 dark:hover:border-blue-400 bg-transparent"
+                >
                   <MessageSquare className="w-4 h-4 mr-2" />
                   {t("actions.chat")}
                 </Button>
@@ -198,16 +218,19 @@ export default function Header({ userRole, onToggleSidebar }: HeaderProps) {
           {/* Messages */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="sm" className="relative">
-                <MessageSquare className="w-5 h-5" />
+              <Button variant="ghost" size="sm" className="relative hover:bg-slate-100 dark:hover:bg-slate-800">
+                <MessageSquare className="w-5 h-5 text-slate-600 dark:text-slate-400" />
                 {unreadMessages > 0 && (
-                  <Badge className="absolute -top-1 -right-1 w-5 h-5 p-0 bg-blue-600 text-white text-xs">
+                  <Badge className="absolute -top-1 -right-1 w-5 h-5 p-0 bg-blue-600 text-white text-xs border-2 border-white dark:border-slate-900">
                     {unreadMessages}
                   </Badge>
                 )}
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-80">
+            <DropdownMenuContent
+              align="end"
+              className="w-80 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-xl"
+            >
               <DropdownMenuLabel>{t("messages.title")}</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <div className="max-h-64 overflow-y-auto">
@@ -220,12 +243,12 @@ export default function Header({ userRole, onToggleSidebar }: HeaderProps) {
                       </Avatar>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between">
-                          <p className="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">
+                          <p className="text-sm font-medium text-slate-900 dark:text-slate-100 truncate">
                             {message.sender}
                           </p>
-                          <span className="text-xs text-gray-500">{message.time}</span>
+                          <span className="text-xs text-slate-500">{message.time}</span>
                         </div>
-                        <p className="text-sm text-gray-600 dark:text-gray-400 truncate">{message.message}</p>
+                        <p className="text-sm text-slate-600 dark:text-slate-400 truncate">{message.message}</p>
                         {message.unread && <div className="w-2 h-2 bg-blue-600 rounded-full mt-1" />}
                       </div>
                     </div>
@@ -242,16 +265,19 @@ export default function Header({ userRole, onToggleSidebar }: HeaderProps) {
           {/* Notifications */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="sm" className="relative">
-                <Bell className="w-5 h-5" />
+              <Button variant="ghost" size="sm" className="relative hover:bg-slate-100 dark:hover:bg-slate-800">
+                <Bell className="w-5 h-5 text-slate-600 dark:text-slate-400" />
                 {unreadNotifications > 0 && (
-                  <Badge className="absolute -top-1 -right-1 w-5 h-5 p-0 bg-red-600 text-white text-xs">
+                  <Badge className="absolute -top-1 -right-1 w-5 h-5 p-0 bg-teal-600 text-white text-xs border-2 border-white dark:border-slate-900">
                     {unreadNotifications}
                   </Badge>
                 )}
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-80">
+            <DropdownMenuContent
+              align="end"
+              className="w-80 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-xl"
+            >
               <DropdownMenuLabel>{t("notifications.title")}</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <div className="max-h-64 overflow-y-auto">
@@ -259,11 +285,11 @@ export default function Header({ userRole, onToggleSidebar }: HeaderProps) {
                   <DropdownMenuItem key={notification.id} className="p-3">
                     <div className="w-full">
                       <div className="flex items-center justify-between">
-                        <p className="text-sm font-medium text-gray-900 dark:text-gray-100">{notification.title}</p>
-                        <span className="text-xs text-gray-500">{notification.time}</span>
+                        <p className="text-sm font-medium text-slate-900 dark:text-slate-100">{notification.title}</p>
+                        <span className="text-xs text-slate-500">{notification.time}</span>
                       </div>
-                      <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{notification.message}</p>
-                      {notification.unread && <div className="w-2 h-2 bg-red-600 rounded-full mt-2" />}
+                      <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">{notification.message}</p>
+                      {notification.unread && <div className="w-2 h-2 bg-teal-600 rounded-full mt-2" />}
                     </div>
                   </DropdownMenuItem>
                 ))}

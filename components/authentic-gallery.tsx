@@ -89,7 +89,7 @@ const authenticEthiopianImages = [
   },
 ]
 
-export default function AuthenticGallery() {
+export function AuthenticGallery() {
   const [selectedCategory, setSelectedCategory] = useState("All")
   const [galleryOpen, setGalleryOpen] = useState(false)
   const [selectedImageIndex, setSelectedImageIndex] = useState(0)
@@ -325,3 +325,6 @@ export default function AuthenticGallery() {
     </section>
   )
 }
+
+export { AuthenticGallery as AuthenticGalleryComponent }
+export default AuthenticGallery
