@@ -1,8 +1,2 @@
-/** @type {import('postcss-load-config').Config} */
-const config = {
-  plugins: {
-    '@tailwindcss/postcss': {},
-  },
-};
-
-export default config;
+// PostCSS configuration is handled automatically by Next.js 15 for Tailwind CSS v4
+export default {};
