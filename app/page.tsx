@@ -9,6 +9,7 @@ import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 import { AuthenticGallery } from "@/components/authentic-gallery"
 import { AITourismAssistant } from "@/components/ai-tourism-assistant"
+import { AIChatWidget } from "@/components/ai-chat-widget"
 import {
   Heart,
   Star,
@@ -282,6 +283,9 @@ export default function HomePage() {
 
         {/* Gallery Section */}
         <AuthenticGallery />
+
+        {/* AI Chat Widget Section */}
+        <AIChatWidget />
 
         {/* CTA Section */}
         <section className="py-20 bg-gradient-to-br from-primary via-primary/95 to-accent text-white">
